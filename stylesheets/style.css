@@ -73,55 +73,73 @@ body {
   height: 100%;
   font-family: sans-serif;
   text-align: center;
+  font-weight: 100;
 }
 
-/* line 12, ../sass/style.scss */
+/* line 13, ../sass/style.scss */
 a {
   text-decoration: none;
   color: black;
 }
 
-/* line 16, ../sass/style.scss */
+/* line 17, ../sass/style.scss */
 a:hover {
   text-decoration: underline;
 }
 
-/* line 22, ../sass/style.scss */
+/* line 23, ../sass/style.scss */
 .header {
-  background: black;
+  background: green;
   color: white;
   height: 20px;
   line-height: 20px;
   clear: both;
 }
 
-/* line 29, ../sass/style.scss */
+/* line 30, ../sass/style.scss */
 h1 {
   float: left;
   margin: 0 10px;
 }
 
-/* line 33, ../sass/style.scss */
+/* line 34, ../sass/style.scss */
 h2 {
   float: right;
   margin: 0 10px;
 }
-/* line 36, ../sass/style.scss */
+/* line 37, ../sass/style.scss */
 h2 a {
   color: white;
 }
 
-/* line 41, ../sass/style.scss */
+/* line 42, ../sass/style.scss */
 .content {
   display: block;
   clear: both;
   height: calc(100% - 20px);
   position: relative;
-  background: orange;
   padding: 10px;
 }
+/* line 51, ../sass/style.scss */
+.content svg .axis text {
+  fill: rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+/* line 55, ../sass/style.scss */
+.content svg .axis .day text {
+  text-anchor: middle;
+}
+/* line 58, ../sass/style.scss */
+.content svg .axis .hour text {
+  text-anchor: left;
+}
+/* line 62, ../sass/style.scss */
+.content svg rect {
+  rx: 10;
+  ry: 10;
+}
 
-/* line 52, ../sass/style.scss */
+/* line 70, ../sass/style.scss */
 .loading {
   position: absolute;
   top: 200px;
@@ -129,7 +147,7 @@ h2 a {
   right: 0;
 }
 
-/* line 60, ../sass/style.scss */
+/* line 78, ../sass/style.scss */
 .attr {
   position: absolute;
   right: 0;
