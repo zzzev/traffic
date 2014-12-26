@@ -1,0 +1,65 @@
+@import "compass/reset";
+
+// globally relevant
+html {
+    height: 100%;
+}
+body {
+    height: 100%;
+    font-family: sans-serif;
+    text-align: center;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+$headerSize: 20px;
+// header
+.header {
+    background: black;
+    color: white;
+    height: $headerSize;
+    line-height: $headerSize;
+    clear: both;
+}
+h1 {
+    float: left;
+    margin: 0 10px;
+}
+h2 {
+    float: right;
+    margin: 0 10px;
+    a {
+        color: white;
+    }
+}
+
+.content {
+    display: block;
+    clear: both;
+    // bad: can't use $headerSize in calc(..)
+    height: calc(100% - 20px);
+    position: relative;
+    background: orange;
+    padding: 10px;
+}
+
+// loading indicator
+.loading {
+    position: absolute;
+    top: 200px;
+    left: 0;
+    right: 0;
+}
+
+// attribution
+.attr {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 0.5em;
+}
