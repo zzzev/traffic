@@ -28,7 +28,7 @@ var SQUARE_PADDING = 5,
                        '6 PM', '', '', '', '', ''];
 
 // load csv formated data; originally sourced from http://tims.berkeley.edu/page.php?page=switrs_resources
-d3.csv('/data.csv', function(d) {
+d3.csv('data.csv', function(d) {
     // remove loader
     d3.select('.loading').remove();
 
@@ -45,8 +45,8 @@ d3.csv('/data.csv', function(d) {
         if (max == null || row.count > max) {
             max = row.count;
         }
-    })
-    console.log(min + ' ' + max);
+    });
+    min = 0; // despite above, set min to zero for now; setting it to the min distorts graphic
 
     // set up basic d3 selections
     host = d3.select('.content');
