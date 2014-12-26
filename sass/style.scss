@@ -9,6 +9,7 @@ body {
     font-family: sans-serif;
     text-align: center;
     font-weight: 100;
+    overflow: hidden;
 }
 a {
     text-decoration: none;
@@ -18,34 +19,38 @@ a:hover {
     text-decoration: underline;
 }
 
-$headerSize: 20px;
+$headerSize: 80px;
 // header
 .header {
     background: green;
     color: white;
     height: $headerSize;
-    line-height: $headerSize;
+    line-height: $headerSize / 4;
     clear: both;
 }
 h1 {
     float: left;
-    margin: 0 10px;
+    margin: $headerSize / 4 10px 0;
 }
 h2 {
-    float: right;
-    margin: 0 10px;
+    clear: both;
+    float: left;
+    margin: 0 10px $headerSize / 4;
+    font-size: 0.8em;
     a {
         color: white;
     }
+}
+select {
+    margin: ($headerSize - 18px) / 2;
 }
 
 .content {
     display: block;
     clear: both;
     // bad: can't use $headerSize in calc(..)
-    height: calc(100% - 20px);
+    height: calc(100% - 80px);
     position: relative;
-    padding: 10px;
     svg {
         .axis {
             text {

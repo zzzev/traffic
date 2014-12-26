@@ -1,12 +1,17 @@
 // simple 24x7 chart of traffic accident data from California, 2003-2012
 // by Zev Youra - zevyoura.com
 
-var min,        // domain of data
+var data,       // raw csv data provided to d3.csv callback
+    min,        // domain of data
     max,
     host,       // d3 selections
     svg,
     dayAxis,
     hourAxis,
+    dayTicks,
+    hourTicks,
+    datumSelection,
+    selectOptions,
     colorScale, // d3 scales for colors
     dayScale,
     hourScale,
@@ -14,7 +19,9 @@ var min,        // domain of data
     height,
     chartWidth, 
     chartHeight,
-    squareSize;
+    squareSize,
+    metrics,    // array of possible metrics
+    metric;     // metric being visualized, one of [total, alcoholrelated]
 
 var SQUARE_PADDING = 5,
     HOURS_PER_DAY = 24,
@@ -26,35 +33,96 @@ var SQUARE_PADDING = 5,
                        '6 AM', '', '', '', '', '',
                        'Noon', '', '', '', '', '',
                        '6 PM', '', '', '', '', ''];
+    METRIC_LABELS = [''];
 
-// load csv formated data; originally sourced from http://tims.berkeley.edu/page.php?page=switrs_resources
-d3.csv('data.csv', function(d) {
-    // remove loader
-    d3.select('.loading').remove();
+var setMetric = function(metricToSet) {
+    metric = metricToSet;
 
-    // calculate domain (min/max) of data
-    d.forEach(function(row, i) {
-        // take string raw data in all caps keys and store int version in lower case key
+    min = 0;    // zero for min to avoid distorting low values
+    max = null; // max based on actual data's max
+    data.forEach(function(row, i) {
+        // calc min/max for given metric
+        if (min == null || row[metric] < min) {
+            min = row[metric];
+        }
+        if (max == null || row[metric] > max) {
+            max = row[metric];
+        }
+    });
+
+    colorScale
+        .domain([min, max])
+        .range([d3.rgb('white'), d3.rgb('green')]);
+
+    datumSelection.transition().attr('fill', function(d,i) { 
+        return colorScale(d[metric]); 
+    });
+}
+
+var resize = function() {
+    width = host.node().clientWidth;
+    height = host.node().clientHeight;
+    svg
+        .attr('width', width)
+        .attr('height', height);
+
+    // calculate dimensions
+    chartWidth = width - LEGEND_WIDTH - (CHART_PADDING * 2);
+    chartHeight = height - LEGEND_WIDTH - (CHART_PADDING * 2);
+    squareSize = Math.floor(Math.min(100, 
+                                     chartWidth / (HOURS_PER_DAY + 1),
+                                     chartHeight / (DAYS_PER_WEEK + 1)
+                            )) - SQUARE_PADDING;
+
+    // update axis positions
+    dayTicks.attr('y', function(d, i) { return CHART_PADDING + LEGEND_WIDTH + ((i + 0.5) * (squareSize + SQUARE_PADDING))})
+    hourTicks.attr('x', function(d, i) { return CHART_PADDING + LEGEND_WIDTH + (i * (squareSize + SQUARE_PADDING))})
+
+    // update chart data positions
+    datumSelection
+        .attr('width', squareSize)
+        .attr('height', squareSize)
+        .attr('x', function(d,i) { 
+            return CHART_PADDING + LEGEND_WIDTH + d.hour * (squareSize + SQUARE_PADDING); 
+        }).attr('y', function(d,i) {
+            // day of week is 1 indexed per data source
+            return CHART_PADDING + LEGEND_WIDTH + (d.dayweek - 1) * (squareSize + SQUARE_PADDING);
+        });
+}
+
+var processData = function(csv) {
+    data = csv;
+
+    // take string raw data in all caps keys and store int version in lower case key
+    data.forEach(function(row, i) {
         d3.map(row).forEach(function(key, val) {
             row[key.toLowerCase()] = parseInt(val);
             delete row[key];
         });
-        if (min == null || row.count < min) {
-            min = row.count;
-        }
-        if (max == null || row.count > max) {
-            max = row.count;
-        }
     });
-    min = 0; // despite above, set min to zero for now; setting it to the min distorts graphic
+
+    metrics = d3.map(data[0]).keys().filter(function(key) { return key != 'dayweek' && key != 'hour'; });
+
+    selectElt = d3.select('select');
+    selectElt.selectAll('option').remove(); // clear loading option
+    selectOptions = selectElt.selectAll('option').data(metrics)
+        .enter().append('option')
+            .text(function(d,i) { return d; });
+    selectElt.on('change', function() {
+        setMetric(selectOptions[0][selectElt.property('selectedIndex')].text);
+    });
+}
+
+// load csv formated data; originally sourced from http://tims.berkeley.edu/page.php?page=switrs_resources
+d3.csv('data.csv', function(d) {
+    processData(d);
+
+    // remove loader
+    d3.select('.loading').remove();
 
     // set up basic d3 selections
     host = d3.select('.content');
-    width = host.node().clientWidth;
-    height = host.node().clientHeight;
-    svg = host.append('svg')
-        .attr('width', width)
-        .attr('height', height);
+    svg = host.append('svg');
 
     // set up scales
     dayScale = d3.scale.ordinal()
@@ -63,45 +131,32 @@ d3.csv('data.csv', function(d) {
     hourScale = d3.scale.ordinal()
         .domain(d3.range(0, 23))
         .range(HOUR_LABELS);
-    colorScale = d3.scale.linear()
-        .domain([min, max])
-        .range([d3.rgb('white'), d3.rgb('green')]);
-
-    // calculate dimensions
-    chartWidth = width - LEGEND_WIDTH - (CHART_PADDING * 2);
-    chartHeight = height - LEGEND_WIDTH - (CHART_PADDING * 2);
-    squareSize = Math.floor(Math.min(100, chartWidth / (HOURS_PER_DAY + 1), chartHeight / (DAYS_PER_WEEK + 1))) - SQUARE_PADDING;
+    colorScale = d3.scale.linear();
 
     // create legend / axes
     dayAxis = svg.append('g')
         .classed('axis', true)
         .classed('day', true);
-    dayAxis.selectAll('.tick').data(d3.range(1, 8))
+    dayTicks = dayAxis.selectAll('.tick').data(d3.range(1, 8))
         .enter().append('text')
-            .classed('tick', true)
             .attr('x', CHART_PADDING)
-            .attr('y', function(d, i) { console.log(d); return CHART_PADDING + LEGEND_WIDTH + ((i + 0.5) * (squareSize + SQUARE_PADDING))})
+            .classed('tick', true)
             .text(function(d) { return dayScale(d); });
     hourAxis = svg.append('g')
         .classed('axis', true)
         .classed('hour', true);
-    hourAxis.selectAll('.tick').data(d3.range(0, 24))
+    hourTicks = hourAxis.selectAll('.tick').data(d3.range(0, 24))
         .enter().append('text')
-            .classed('tick', true)
-            .attr('x', function(d, i) { return CHART_PADDING + LEGEND_WIDTH + (i * (squareSize + SQUARE_PADDING))})
             .attr('y', CHART_PADDING + (LEGEND_WIDTH / 2))
+            .classed('tick', true)
             .text(function(d) { return hourScale(d); });
 
     // make basic 24x7 chart
-    svg.selectAll('.datum').data(d)
-        .enter().append('rect')
-            .attr('width', squareSize)
-            .attr('height', squareSize)
-            .attr('x', function(d,i) { 
-                return CHART_PADDING + LEGEND_WIDTH + d.hour * (squareSize + SQUARE_PADDING); 
-            }).attr('y', function(d,i) {
-                // day of week is 1 indexed per data source
-                return CHART_PADDING + LEGEND_WIDTH + (d.dayweek - 1) * (squareSize + SQUARE_PADDING);
-            }).attr('fill', function(d,i) { return colorScale(d.count); });
+    datumSelection = svg.selectAll('.datum').data(d)
+        .enter().append('rect');
 
+    resize();
+    window.addEventListener('resize', resize);
+
+    setMetric(metrics[0]);
 });

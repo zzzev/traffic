@@ -74,72 +74,79 @@ body {
   font-family: sans-serif;
   text-align: center;
   font-weight: 100;
+  overflow: hidden;
 }
 
-/* line 13, ../sass/style.scss */
+/* line 14, ../sass/style.scss */
 a {
   text-decoration: none;
   color: black;
 }
 
-/* line 17, ../sass/style.scss */
+/* line 18, ../sass/style.scss */
 a:hover {
   text-decoration: underline;
 }
 
-/* line 23, ../sass/style.scss */
+/* line 24, ../sass/style.scss */
 .header {
   background: green;
   color: white;
-  height: 20px;
+  height: 80px;
   line-height: 20px;
   clear: both;
 }
 
-/* line 30, ../sass/style.scss */
+/* line 31, ../sass/style.scss */
 h1 {
   float: left;
-  margin: 0 10px;
+  margin: 20px 10px 0;
 }
 
-/* line 34, ../sass/style.scss */
+/* line 35, ../sass/style.scss */
 h2 {
-  float: right;
-  margin: 0 10px;
+  clear: both;
+  float: left;
+  margin: 0 10px 20px;
+  font-size: 0.8em;
 }
-/* line 37, ../sass/style.scss */
+/* line 40, ../sass/style.scss */
 h2 a {
   color: white;
 }
 
-/* line 42, ../sass/style.scss */
+/* line 44, ../sass/style.scss */
+select {
+  margin: 31px;
+}
+
+/* line 48, ../sass/style.scss */
 .content {
   display: block;
   clear: both;
-  height: calc(100% - 20px);
+  height: calc(100% - 80px);
   position: relative;
-  padding: 10px;
 }
-/* line 51, ../sass/style.scss */
+/* line 56, ../sass/style.scss */
 .content svg .axis text {
   fill: rgba(0, 0, 0, 0.5);
   cursor: default;
 }
-/* line 55, ../sass/style.scss */
+/* line 60, ../sass/style.scss */
 .content svg .axis .day text {
   text-anchor: middle;
 }
-/* line 58, ../sass/style.scss */
+/* line 63, ../sass/style.scss */
 .content svg .axis .hour text {
   text-anchor: left;
 }
-/* line 62, ../sass/style.scss */
+/* line 67, ../sass/style.scss */
 .content svg rect {
   rx: 10;
   ry: 10;
 }
 
-/* line 70, ../sass/style.scss */
+/* line 75, ../sass/style.scss */
 .loading {
   position: absolute;
   top: 200px;
@@ -147,7 +154,7 @@ h2 a {
   right: 0;
 }
 
-/* line 78, ../sass/style.scss */
+/* line 83, ../sass/style.scss */
 .attr {
   position: absolute;
   right: 0;
