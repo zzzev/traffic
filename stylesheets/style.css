@@ -88,7 +88,12 @@ a:hover {
   text-decoration: underline;
 }
 
-/* line 24, ../sass/style.scss */
+/* line 21, ../sass/style.scss */
+.hidden {
+  display: none;
+}
+
+/* line 27, ../sass/style.scss */
 .header {
   background: green;
   color: white;
@@ -103,29 +108,29 @@ a:hover {
   overflow: visible;
 }
 
-/* line 37, ../sass/style.scss */
+/* line 40, ../sass/style.scss */
 .titles {
   float: left;
   width: 50%;
   text-align: left;
 }
 
-/* line 42, ../sass/style.scss */
+/* line 45, ../sass/style.scss */
 h1 {
   margin: 15px 10px 0;
 }
 
-/* line 45, ../sass/style.scss */
+/* line 48, ../sass/style.scss */
 h2 {
   margin: 0 10px 15px;
   font-size: 0.8em;
 }
-/* line 48, ../sass/style.scss */
+/* line 51, ../sass/style.scss */
 h2 a {
   color: white;
 }
 
-/* line 52, ../sass/style.scss */
+/* line 55, ../sass/style.scss */
 .selector {
   float: right;
   width: 50%;
@@ -137,19 +142,19 @@ h2 a {
   flex-direction: column;
   align-items: flex-end;
 }
-/* line 62, ../sass/style.scss */
+/* line 65, ../sass/style.scss */
 .selector.open {
   height: auto;
 }
-/* line 64, ../sass/style.scss */
+/* line 67, ../sass/style.scss */
 .selector.open .option {
   display: block;
 }
-/* line 66, ../sass/style.scss */
+/* line 69, ../sass/style.scss */
 .selector.open .option:hover {
   background: rgba(0, 0, 0, 0.75);
 }
-/* line 71, ../sass/style.scss */
+/* line 74, ../sass/style.scss */
 .selector .option {
   cursor: pointer;
   flex-grow: 1;
@@ -161,7 +166,7 @@ h2 a {
   height: 30px;
   line-height: 30px;
 }
-/* line 81, ../sass/style.scss */
+/* line 84, ../sass/style.scss */
 .selector .option.selected {
   flex-grow: 0;
   display: block;
@@ -169,7 +174,7 @@ h2 a {
   line-height: 60px;
   order: 0;
 }
-/* line 87, ../sass/style.scss */
+/* line 90, ../sass/style.scss */
 .selector .option.selected:after {
   display: inline-block;
   content: " ";
@@ -181,7 +186,7 @@ h2 a {
   margin-left: 10px;
 }
 
-/* line 101, ../sass/style.scss */
+/* line 104, ../sass/style.scss */
 .content {
   position: absolute;
   z-index: 0;
@@ -190,33 +195,33 @@ h2 a {
   right: 0;
   left: 0;
 }
-/* line 109, ../sass/style.scss */
+/* line 112, ../sass/style.scss */
 .content svg text {
   fill: rgba(0, 0, 0, 0.5);
   cursor: default;
 }
-/* line 114, ../sass/style.scss */
+/* line 117, ../sass/style.scss */
 .content svg .axis .day text {
   text-anchor: middle;
 }
-/* line 117, ../sass/style.scss */
+/* line 120, ../sass/style.scss */
 .content svg .axis .hour text {
   text-anchor: left;
 }
-/* line 121, ../sass/style.scss */
+/* line 124, ../sass/style.scss */
 .content svg .legend rect {
   fill: url(#legendGradient);
 }
-/* line 124, ../sass/style.scss */
+/* line 127, ../sass/style.scss */
 .content svg .stop1 {
   stop-color: green;
 }
-/* line 127, ../sass/style.scss */
+/* line 130, ../sass/style.scss */
 .content svg .stop2 {
   stop-color: white;
 }
 
-/* line 134, ../sass/style.scss */
+/* line 137, ../sass/style.scss */
 .loading {
   position: absolute;
   top: 200px;
@@ -224,10 +229,22 @@ h2 a {
   right: 0;
 }
 
-/* line 142, ../sass/style.scss */
+/* line 145, ../sass/style.scss */
 .attr {
   position: absolute;
   right: 0;
   bottom: 0;
   font-size: 0.5em;
+}
+
+/* line 153, ../sass/style.scss */
+.tooltip {
+  position: absolute;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  color: black;
+  border-radius: 3px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+  cursor: default;
+  pointer-events: none;
 }

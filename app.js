@@ -13,10 +13,13 @@ var data,       // raw csv data provided to d3.csv callback
     colorLegend,
     legendRect,
     legendLabels,
+    tooltip,
     datumSelection,
     selectOptions,
     colorScale, // d3 scale for square coloring
-    dayScale,   // d3 ordinal scales for axis labels
+    dayAxisScale,   // d3 ordinal scales for axis labels
+    hourAxisScale,
+    dayScale,   // d3 ordinal scales for tooltip labeling
     hourScale,
     width,      // dimensions (based on screen size)
     height,
@@ -33,11 +36,16 @@ var SQUARE_PADDING = 5,
     DAYS_PER_WEEK = 7,
     LEGEND_WIDTH = 40,
     CHART_PADDING = 10,
-    DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-    HOUR_LABELS = ['Midnight', '', '', '', '', '',
+    DAY_LABELS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    DAY_AXIS_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+    HOUR_AXIS_LABELS = ['Midnight', '', '', '', '', '',
                        '6 AM', '', '', '', '', '',
                        'Noon', '', '', '', '', '',
                        '6 PM', '', '', '', '', ''];
+    HOUR_LABELS = ['Midnight', '1 AM', '2 AM', '3 AM', '4 AM', '5 AM',
+                       '6 AM', '7 AM', '8 AM', '9 AM', '10 AM', '11 AM',
+                       'Noon', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM',
+                       '6 PM', '7 PM', '8 PM', '9 PM', '10 PM', '11 PM'];
     METRIC_LABELS = {
         'total': 'All incidents',
         'alcoholrelated': 'Alcohol-related crashes',
@@ -138,15 +146,19 @@ var processData = function(csv) {
     selectElt = d3.select('.selector')
         .text('')
         .on('mouseover', function(d, i) { selectElt.classed('open', true); })
-        .on('mouseout', function(d, u) { selectElt.classed('open', false); });
+        .on('mouseout', closeDropdown);
     selectOptions = selectElt.selectAll('.option').data(metrics)
         .enter().append('div')
             .classed('option', true)
             .text(function(d,i) { return METRIC_LABELS[d]; })
             .on('click', function(d) {
-                selectElt.classed('open', false);
+                closeDropdown();
                 setMetric(d);
             });
+}
+
+var closeDropdown = function() {
+    selectElt.classed('open', false);
 }
 
 var setupChart = function() {
@@ -158,6 +170,12 @@ var setupChart = function() {
     svg = host.select('svg');
 
     // set up scales
+    dayAxisScale = d3.scale.ordinal()
+        .domain(d3.range(1, 8))
+        .range(DAY_AXIS_LABELS);
+    hourAxisScale = d3.scale.ordinal()
+        .domain(d3.range(0, 23))
+        .range(HOUR_AXIS_LABELS);
     dayScale = d3.scale.ordinal()
         .domain(d3.range(1, 8))
         .range(DAY_LABELS);
@@ -173,7 +191,7 @@ var setupChart = function() {
     dayTicks = dayAxis.selectAll('.tick').data(d3.range(1, 8))
         .enter().append('text')
             .classed('tick', true)
-            .text(function(d) { return dayScale(d); });
+            .text(function(d) { return dayAxisScale(d); });
     hourAxis = svg.append('g')
         .classed('axis', true)
         .classed('hour', true);
@@ -181,7 +199,7 @@ var setupChart = function() {
         .enter().append('text')
             .attr('y', CHART_PADDING + (LEGEND_WIDTH / 2))
             .classed('tick', true)
-            .text(function(d) { return hourScale(d); });
+            .text(function(d) { return hourAxisScale(d); });
     colorLegend = svg.append('g')
         .classed('legend', true);
     legendRect = colorLegend.append('rect')
@@ -191,9 +209,23 @@ var setupChart = function() {
     legendLabels = colorLegend.selectAll('text').data([0,1]).enter().append('text')
         .attr('x', LEGEND_WIDTH / 2 + 4);
 
+    // select tooltip (part of html page; already exists)
+    tooltip = d3.select('.tooltip');
+
     // make basic 24x7 chart
     datumSelection = svg.selectAll('.datum').data(data)
-        .enter().append('rect');
+        .enter().append('rect')
+            .on('mouseout', function() { tooltip.classed('hidden', true); })
+            .on('mousemove', function(d, i) {
+                var tooltipText = dayScale(d.dayweek) + " " + hourScale(d.hour) + " - " + HOUR_LABELS[(d.hour + 1) % 24] + ": " + d[metric] + " incidents"
+                tooltip
+                    .text(tooltipText)
+                    .classed('hidden', false)
+                    .style({
+                        left: d3.event.x + 'px',
+                        top: d3.event.y + 'px'
+                    });
+            });
 }
 
 // load csv formated data; originally sourced from http://tims.berkeley.edu/page.php?page=switrs_resources

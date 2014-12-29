@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <title>California Traffic Accidents</title>
+        <title>California Traffic Accidents 2003-2012</title>
         <link rel="stylesheet" href="stylesheets/style.css" />
         <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
         <script src="http://d3js.org/topojson.v1.min.js"></script>
@@ -10,7 +10,7 @@
     <body>
         <div class="header">
             <div class="titles">
-                <h1>California Traffic Accidents</h1>
+                <h1>California Traffic Accidents 2003-2012</h1>
                 <h2>visualization by <a href="http://zevyoura.com/">Zev Youra</a></h2>
             </div>
             <div class="selector">
@@ -30,6 +30,10 @@
             </defs>    
         </svg>
         </div>
-        <div class="attr">data from <a href="http://tims.berkeley.edu/page.php?page=switrs_resources">SWITRS via Berkeley</a></div>
+        <div class="tooltip hidden"></div>
+        <div class="attr">
+            Data from <a href="http://tims.berkeley.edu/page.php?page=switrs_resources">SWITRS via Berkeley. 
+            <a href="http://github.com/zzzev/traffic">Code</a> is BSD licensed.</a>
+        </div>
     </body>
 </html>
