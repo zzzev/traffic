@@ -13,14 +13,23 @@
                 <h1>California Traffic Accidents</h1>
                 <h2>visualization by <a href="http://zevyoura.com/">Zev Youra</a></h2>
             </div>
-            <select>
-                <option selected>Loading...</option>
-            </select>
+            <div class="selector">
+                Loading...
+            </div>
         </div>
         <div class="loading">
             <div class="label">loading...</div>
         </div>
-        <div class="content"></div>
+        <div class="content">
+        <svg>
+            <defs>
+                <linearGradient id="legendGradient" x1="0" x2="0" y1="1" y2="0">
+                    <stop class="stop1" offset="0%" />
+                    <stop class="stop2" offset="100%" />
+                </linearGradient>
+            </defs>    
+        </svg>
+        </div>
         <div class="attr">data from <a href="http://tims.berkeley.edu/page.php?page=switrs_resources">SWITRS via Berkeley</a></div>
     </body>
 </html>

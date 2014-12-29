@@ -92,61 +92,131 @@ a:hover {
 .header {
   background: green;
   color: white;
-  height: 80px;
-  line-height: 20px;
+  height: 60px;
+  line-height: 15px;
   clear: both;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
+  overflow: visible;
 }
 
-/* line 31, ../sass/style.scss */
+/* line 37, ../sass/style.scss */
+.titles {
+  float: left;
+  width: 50%;
+  text-align: left;
+}
+
+/* line 42, ../sass/style.scss */
 h1 {
-  float: left;
-  margin: 20px 10px 0;
+  margin: 15px 10px 0;
 }
 
-/* line 35, ../sass/style.scss */
+/* line 45, ../sass/style.scss */
 h2 {
-  clear: both;
-  float: left;
-  margin: 0 10px 20px;
+  margin: 0 10px 15px;
   font-size: 0.8em;
 }
-/* line 40, ../sass/style.scss */
+/* line 48, ../sass/style.scss */
 h2 a {
   color: white;
 }
 
-/* line 44, ../sass/style.scss */
-select {
-  margin: 31px;
+/* line 52, ../sass/style.scss */
+.selector {
+  float: right;
+  width: 50%;
+  box-sizing: border-box;
+  padding-right: 20px;
+  text-align: right;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+/* line 62, ../sass/style.scss */
+.selector.open {
+  height: auto;
+}
+/* line 64, ../sass/style.scss */
+.selector.open .option {
+  display: block;
+}
+/* line 66, ../sass/style.scss */
+.selector.open .option:hover {
+  background: rgba(0, 0, 0, 0.75);
+}
+/* line 71, ../sass/style.scss */
+.selector .option {
+  cursor: pointer;
+  flex-grow: 1;
+  width: 200px;
+  padding: 0 20px;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  order: 1;
+  height: 30px;
+  line-height: 30px;
+}
+/* line 81, ../sass/style.scss */
+.selector .option.selected {
+  flex-grow: 0;
+  display: block;
+  height: 60px;
+  line-height: 60px;
+  order: 0;
+}
+/* line 87, ../sass/style.scss */
+.selector .option.selected:after {
+  display: inline-block;
+  content: " ";
+  border-top: 8px solid white;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  width: 0;
+  height: 0;
+  margin-left: 10px;
 }
 
-/* line 48, ../sass/style.scss */
+/* line 101, ../sass/style.scss */
 .content {
-  display: block;
-  clear: both;
-  height: calc(100% - 80px);
-  position: relative;
+  position: absolute;
+  z-index: 0;
+  top: 60px;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }
-/* line 56, ../sass/style.scss */
-.content svg .axis text {
+/* line 109, ../sass/style.scss */
+.content svg text {
   fill: rgba(0, 0, 0, 0.5);
   cursor: default;
 }
-/* line 60, ../sass/style.scss */
+/* line 114, ../sass/style.scss */
 .content svg .axis .day text {
   text-anchor: middle;
 }
-/* line 63, ../sass/style.scss */
+/* line 117, ../sass/style.scss */
 .content svg .axis .hour text {
   text-anchor: left;
 }
-/* line 67, ../sass/style.scss */
-.content svg rect {
-  rx: 10;
-  ry: 10;
+/* line 121, ../sass/style.scss */
+.content svg .legend rect {
+  fill: url(#legendGradient);
+}
+/* line 124, ../sass/style.scss */
+.content svg .stop1 {
+  stop-color: green;
+}
+/* line 127, ../sass/style.scss */
+.content svg .stop2 {
+  stop-color: white;
 }
 
-/* line 75, ../sass/style.scss */
+/* line 134, ../sass/style.scss */
 .loading {
   position: absolute;
   top: 200px;
@@ -154,7 +224,7 @@ select {
   right: 0;
 }
 
-/* line 83, ../sass/style.scss */
+/* line 142, ../sass/style.scss */
 .attr {
   position: absolute;
   right: 0;

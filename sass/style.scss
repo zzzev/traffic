@@ -19,7 +19,7 @@ a:hover {
     text-decoration: underline;
 }
 
-$headerSize: 80px;
+$headerSize: 60px;
 // header
 .header {
     background: green;
@@ -27,36 +27,90 @@ $headerSize: 80px;
     height: $headerSize;
     line-height: $headerSize / 4;
     clear: both;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    overflow: visible;
+}
+.titles {
+    float: left;
+    width: 50%;
+    text-align: left;
 }
 h1 {
-    float: left;
     margin: $headerSize / 4 10px 0;
 }
 h2 {
-    clear: both;
-    float: left;
     margin: 0 10px $headerSize / 4;
     font-size: 0.8em;
     a {
         color: white;
     }
 }
-select {
-    margin: ($headerSize - 18px) / 2;
+.selector {
+    float: right;
+    width: 50%;
+    box-sizing: border-box;
+    padding-right: 20px;
+    text-align: right;
+    height: $headerSize;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    &.open {
+        height: auto;
+        .option {
+            display: block;
+            &:hover {
+                background: rgba(0,0,0,0.75);
+            }
+        }
+    }
+    .option {
+        cursor: pointer;
+        flex-grow: 1;
+        width: 200px;
+        padding: 0 20px;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        order: 1;
+        height: $headerSize / 2;
+        line-height: $headerSize / 2;
+        &.selected {
+            flex-grow: 0;
+            display: block;
+            height: $headerSize;
+            line-height: $headerSize;
+            order: 0;
+            &:after {
+                display: inline-block;
+                content: " ";
+                border-top: 8px solid rgba(255,255,255,1);
+                border-left: 6px solid transparent;
+                border-right: 6px solid transparent;
+                width: 0;
+                height: 0;
+                margin-left: 10px;
+            }
+        }
+    }
 }
 
 .content {
-    display: block;
-    clear: both;
-    // bad: can't use $headerSize in calc(..)
-    height: calc(100% - 80px);
-    position: relative;
+    position: absolute;
+    z-index: 0;
+    top: $headerSize;
+    bottom: 0;
+    right: 0;
+    left: 0;
     svg {
+        text {
+            fill: rgba(0,0,0,0.5);
+            cursor: default;
+        }
         .axis {
-            text {
-                fill: rgba(0,0,0,0.5);
-                cursor: default;
-            }
             .day text {
                 text-anchor: middle;
             }
@@ -64,9 +118,14 @@ select {
                 text-anchor: left;
             }
         }
-        rect {
-            rx: 10;
-            ry: 10;
+        .legend rect {
+            fill: url(#legendGradient);
+        }
+        .stop1 {
+            stop-color: green;
+        }
+        .stop2 {
+            stop-color: white;
         }
     }
 }
